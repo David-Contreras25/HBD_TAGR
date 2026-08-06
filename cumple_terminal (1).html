@@ -1,0 +1,229 @@
+<div class="crt-wrap">
+  <div class="terminal">
+    <div class="titlebar">
+      <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+      <span class="titletext">Feliz_Cumpleaños_Tania.sh — 80x24</span>
+    </div>
+    <pre id="screen" class="screen"></pre>
+    <canvas id="confetti"></canvas>
+  </div>
+</div>
+
+<style>
+  * { box-sizing: border-box; }
+  .crt-wrap {
+    --bg: #1c1024;
+    --panel: #28152f;
+    --main: #ffe066;
+    --main-dim: #e08fc4;
+    --main-bright: #fff3b0;
+    --accent: #ff6ec7;
+    --line: #4a2a4a;
+    width: 100%;
+    min-height: 480px;
+    background: var(--bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    font-family: 'JetBrains Mono', 'Fira Code', ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+  }
+  .terminal {
+    position: relative;
+    width: min(680px, 100%);
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    box-shadow: 0 0 0 1px #000, 0 20px 60px -20px rgba(255,110,199,0.25), inset 0 0 60px rgba(255,224,102,0.04);
+    overflow: hidden;
+  }
+  .titlebar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 12px;
+    background: #201028;
+    border-bottom: 1px solid var(--line);
+  }
+  .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; opacity: 0.85; }
+  .dot.red { background: #ff6ec7; }
+  .dot.yellow { background: #ffe066; }
+  .dot.green { background: #ffb3de; }
+  .titletext {
+    margin-left: 10px;
+    color: var(--main-dim);
+    font-size: 12px;
+    letter-spacing: 0.5px;
+  }
+  .screen {
+    margin: 0;
+    padding: 18px 20px 26px;
+    color: var(--main);
+    font-size: 13.5px;
+    line-height: 1.55;
+    white-space: pre-wrap;
+    min-height: 380px;
+    text-shadow: 0 0 6px rgba(255,224,102,0.45);
+    position: relative;
+    z-index: 2;
+  }
+  .screen::after {
+    content: '█';
+    animation: blink 1s step-end infinite;
+  }
+  .screen.done::after { display: none; }
+  @keyframes blink { 50% { opacity: 0; } }
+  .ok { color: var(--accent); text-shadow: 0 0 6px rgba(255,110,199,0.55); }
+  .dim { color: var(--main-dim); text-shadow: 0 0 4px rgba(224,143,196,0.35); }
+  .bright { color: var(--main-bright); text-shadow: 0 0 10px rgba(255,243,176,0.75), 0 0 18px rgba(255,110,199,0.35); }
+  .terminal::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+      to bottom,
+      rgba(0,0,0,0.12) 0px,
+      rgba(0,0,0,0.12) 1px,
+      transparent 1px,
+      transparent 3px
+    );
+    z-index: 3;
+  }
+  #confetti {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+  }
+</style>
+
+<script>
+(function() {
+  // ---------------- CONFIG: editar estas dos líneas ----------------
+  const NOMBRE = "Tania <3";
+  const EDAD = 24; // pon un número
+  // ------------------------------------------------------------------
+
+  const edadLine = EDAD
+    ? `> versión anterior: v${EDAD}.0  →  nueva versión: v${EDAD + 1}.0 (más estable, menos bugs)`
+    : `> aplicando parche de +1 año... build más estable que la anterior`;
+
+  const lines = [
+    { t: `$ sudo apt-get install felicidad --target=${NOMBRE}`, cls: '' },
+    { t: `[sudo] password aceptada (era "Cuba&Africa")`, cls: 'dim' },
+    { t: `Resolviendo dependencias...`, cls: '' },
+    { t: `  ├─ risas.pkg          OK`, cls: 'ok' },
+    { t: `  ├─ abrazos.pkg        OK`, cls: 'ok' },
+    { t: `  └─ pastel.pkg         OK`, cls: 'ok' },
+    { t: ``, cls: '' },
+    { t: `Iniciando Feliz_Cumpleaños_Tania.sh...`, cls: '' },
+    { t: `[####################] 100%`, cls: 'bright' },
+    { t: ``, cls: '' },
+    { t: `WARNING: nivel de tristeza no encontrado (404)`, cls: 'dim' },
+    { t: `         → ignorando, no era necesario de todos modos`, cls: 'dim' },
+    { t: edadLine, cls: '' },
+    { t: `> compilando deseos... sin errores, sin warnings`, cls: '' },
+    { t: ``, cls: '' },
+    { t: `     ******** ********`, cls: 'ok' },
+    { t: `    *******************`, cls: 'ok' },
+    { t: `   *********************`, cls: 'ok' },
+    { t: `    *******************`, cls: 'ok' },
+    { t: `     *****************`, cls: 'ok' },
+    { t: `         *********`, cls: 'ok' },
+    { t: `            ***`, cls: 'ok' },
+    { t: ``, cls: '' },
+    { t: `> Me alegra mucho verte cumplir un año más, y ver tu risa iluminar la vida`, cls: '' },
+    { t: `> ¡Deseo que todos tus sueños se vuelvan realidad!`, cls: 'dim' },
+    { t: ``, cls: '' },
+    { t: `>>> FELIZ CUMPLEAÑOS, ${NOMBRE.toUpperCase()} <<<`, cls: 'bright' },
+    { t: `proceso finalizado con éxito. que este año compile a la primera. 🎂`, cls: 'ok' },
+  ];
+
+  const screenEl = document.getElementById('screen');
+  let li = 0, ci = 0;
+
+  function typeNext() {
+    if (li >= lines.length) {
+      screenEl.classList.add('done');
+      startConfetti();
+      return;
+    }
+    const line = lines[li];
+    if (ci === 0 && line.cls) {
+      const span = document.createElement('span');
+      span.className = line.cls;
+      span.dataset.building = '1';
+      screenEl.appendChild(span);
+    }
+    const target = line.cls
+      ? screenEl.querySelector('span[data-building="1"]')
+      : screenEl;
+
+    if (ci < line.t.length) {
+      target.appendChild(document.createTextNode(line.t[ci]));
+      ci++;
+      setTimeout(typeNext, line.t.trim() === '' ? 0 : 12 + Math.random() * 18);
+    } else {
+      if (target && target.dataset) target.removeAttribute('data-building');
+      screenEl.appendChild(document.createTextNode('\n'));
+      li++; ci = 0;
+      setTimeout(typeNext, line.t.trim() === '' ? 40 : 90);
+    }
+  }
+  typeNext();
+
+  // ---------------- Confetti al terminar ----------------
+  function startConfetti() {
+    const canvas = document.getElementById('confetti');
+    const wrap = canvas.closest('.terminal');
+    const dpr = window.devicePixelRatio || 1;
+    function resize() {
+      canvas.width = wrap.clientWidth * dpr;
+      canvas.height = wrap.clientHeight * dpr;
+      canvas.style.width = wrap.clientWidth + 'px';
+      canvas.style.height = wrap.clientHeight + 'px';
+    }
+    resize();
+    window.addEventListener('resize', resize);
+    const ctx = canvas.getContext('2d');
+    const colors = ['#ffe066', '#ff6ec7', '#ffb3de', '#fff3b0', '#e08fc4'];
+    const pieces = Array.from({ length: 70 }, () => ({
+      x: Math.random() * wrap.clientWidth,
+      y: -20 - Math.random() * 200,
+      w: 4 + Math.random() * 4,
+      h: 6 + Math.random() * 6,
+      speed: 1 + Math.random() * 2.2,
+      drift: (Math.random() - 0.5) * 1.2,
+      rot: Math.random() * Math.PI,
+      rotSpeed: (Math.random() - 0.5) * 0.15,
+      color: colors[Math.floor(Math.random() * colors.length)],
+    }));
+    function frame() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.save();
+      ctx.scale(dpr, dpr);
+      pieces.forEach(p => {
+        p.y += p.speed;
+        p.x += p.drift;
+        p.rot += p.rotSpeed;
+        if (p.y > wrap.clientHeight + 20) {
+          p.y = -20;
+          p.x = Math.random() * wrap.clientWidth;
+        }
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.rot);
+        ctx.fillStyle = p.color;
+        ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+        ctx.restore();
+      });
+      ctx.restore();
+      requestAnimationFrame(frame);
+    }
+    frame();
+  }
+})();
+</script>
